@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  mujoco:
+    build: .
+    container_name: mujoco_py
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+      - DISPLAY=:1
+      - MUJOCO_GL=glx
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - MESA_LOADER_DRIVER_OVERRIDE=llvmpipe
+    
+    volumes:
+      - ../:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # - ~/.Xauthority:/root/.Xauthority:rw
+      - /home/parallels/.Xauthority:/root/.Xauthority:rw
+    network_mode: host
+    command: /bin/bash
+    tty: true
+    stdin_open: true
