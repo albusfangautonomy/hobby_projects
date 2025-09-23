@@ -1,0 +1,31 @@
+{
+    "name": "Hobby project",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "mujoco",
+    
+    "runServices": [ "mujoco" ],
+    "overrideCommand": true,
+    "settings": {
+      "terminal.integrated.defaultProfile.linux": "bash"
+      // "terminal.integrated.env.linux": {
+      //   "PYTHONPATH": "/root:${PYTHONPATH}"
+      // }
+    },
+    "extensions": [
+      "ms-vscode.cpptools",
+      "ms-python.python",
+      "ms-azuretools.vscode-docker",
+      "ms-vscode.remote-containers"
+    ],
+    "mounts": [
+      "source=${localWorkspaceFolder},target=/app,type=bind"
+    ],
+    "remoteEnv": {
+      "DISPLAY": ":1",
+      "XDG_RUNTIME_DIR": "/run/user/1000"
+    },
+    "workspaceFolder": "/app",
+    // "postCreateCommand": "source /opt/ros/humble/setup.bash && rosdep update",
+    "remoteUser": "root"
+  }
+  

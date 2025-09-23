@@ -1,77 +1,100 @@
 import casadi as ca
-q1, q2 = ca.SX.sym('q1'), ca.SX.sym('q2')
-dq1, dq2 = ca.SX.sym('dq1'), ca.SX.sym('dq2')
-q = ca.vertcat(q1,q2)
-dq = ca.vertcat(dq1,dq2)
+import numpy as np
 
-u = ca.SX.sym('u')
-tau = ca.vertcat(0,u)
+x = ca.SX.sym("x")
+theta = ca.SX.sym("theta")
+xdot = ca.SX.sym("xdot")
+thetadot = ca.SX.sym("thetadot")
+f_x = ca.SX.sym("f_x")
+u_input = f_x
+B = ca.vertcat(1,0)
 
-# Parameters
-m1   = ca.SX.sym('m1')
-m2   = ca.SX.sym('m2')
-l1   = ca.SX.sym('l1')         # length of link 1
-l2   = ca.SX.sym('l2')         # length of link 2
-lc1  = ca.SX.sym('lc1')        # COM distance on link 1
-lc2  = ca.SX.sym('lc2')        # COM distance on link 2
-I1   = ca.SX.sym('I1')         # planar inertia about COM for link 1
-I2   = ca.SX.sym('I2')         # planar inertia about COM for link 2
-g    = ca.SX.sym('g')
+mp = ca.SX.sym("mp")
+mc = ca.SX.sym("mc")
+l = ca.SX.sym("l")
+g = ca.SX.sym("g")
 
-p = ca.vertcat(m1,m2,l1,l2,lc1,lc2,I1,I2,g)
+p = ca.vertcat(mp, mc, l, g)
+
+q = ca.vertcat(x,theta)
+qdot = ca.vertcat(xdot, thetadot)
+state = ca.vertcat(q, qdot)
+state_eq = ca.vertcat(0, ca.pi, 0, 0)
 
 # --------------------------
 # Kinematics
 # --------------------------
 # World frame: x right, y up. Angles measured from +x axis (CCW).
-# Link 1 COM
-x1 = lc1*ca.cos(q1)
-y1 = lc1*ca.sin(q1)
+# cart
+xc = x
+yc = 0
 
-# Link 2 COM (relative to base)
-x2 = l1*ca.cos(q1) + lc2*ca.cos(q1+q2)
-y2 = l1*ca.sin(q1) + lc2*ca.sin(q1+q2)
+# pole
+xp = x + l * (ca.sin(theta))
+yp = l * (-ca.cos(theta))
 
-pos1 = ca.vertcat(x1,y1)
-pos2 = ca.vertcat(x2,y2)
 
-# Velocities via Jacobian * qdot
-J1 = ca.jacobian(pos1, q)      # 2x2
-J2 = ca.jacobian(pos2, q)      # 2x2
-v1 = J1 @ dq
-v2 = J2 @ dq
+posc = ca.vertcat(xc,yc)
+posp = ca.vertcat(xp,yp)
 
-# --------------------------
-# Energies & Lagrangian
-# --------------------------
 
-T = (1/2) * m1 * (v1[0]**2 + v1[1]**2) + (1/2) * m2 * (v2[0]**2 + v2[1]**2)
-U = m1*g*pos1[1] + m2*g*pos2[1]
+dxcdq = ca.jacobian(posc, q)
+vc = dxcdq @ qdot
+dxpdq = ca.jacobian(posp, q)
+vp = dxpdq @ qdot
+
+Tc = 0.5 * mc * (vc[0]**2 + vc[1]**2)
+Tp = 0.5 * mp * (vp[0]**2 + vp[1]**2)
+T = Tc + Tp
+
+U = mp * g * posp[1]   # = -mp*g*l*cos(theta)
+
 L = T - U
 
+dLdqdot = ca.jacobian(L, qdot).T
+dLdq = ca.jacobian(L, q).T
+M = ca.jacobian(dLdqdot, qdot)
+Cqdot = ca.jacobian(dLdqdot, q) @ qdot
+GradL_q = ca.jacobian(L, q).T
+ddq = ca.solve(M, (B *u_input - Cqdot + GradL_q))
+
+f = ca.vertcat(xdot, thetadot, ddq)
+A_sym = ca.jacobian(f, state)
+B_sym = ca.jacobian(f, u_input)
+# print("A system is: \n", A_sym.str())
+# print("Linearized B system is \n", B_sym.str())
+# Substitute the equilibrium (x=0, theta=pi, xdot=0, thetadot=0, u=0)
+print ("M = \n", M)
+print("Cqdot = ", Cqdot)
+print("tau_g = \n", GradL_q)
+z_eq = ca.SX([0.0, np.pi, 0.0, 0.0])  # SX vector
+A_eq = ca.substitute(A_sym, state, z_eq)
+A_eq = ca.substitute(A_eq, f_x, ca.SX(0.0))
+
+B_eq = ca.substitute(B_sym, state, z_eq)
+B_eq = ca.substitute(B_eq, f_x, ca.SX(0.0))
+
+print("A_eq is \n", A_eq)
+print("B_eq is \n", B_eq)
 
 
-# --------------------------
-# Euler–Lagrange to manipulator form: M(q) ddq + C(q,dq) dq + G(q) = tau
-# d/dt(∂L/∂dq) - ∂L/∂q = tau
-# We compute:
-#   H(q)      = ∂(∂L/∂dq)/∂dq       (mass matrix)
-#   Cqdot     = ∂(∂L/∂dq)/∂q * dq   (Coriolis/centrifugal-like term times dq)
-#   GradL_q   = ∂L/∂q               (note: G = ∂V/∂q, so GradL_q = ∂T/∂q - G)
-# Then: H*ddq + Cqdot - GradL_q = tau  =>  ddq = H^{-1}(tau - Cqdot + GradL_q)
-dldq = ca.jacobian(L, q).T
-dldqdot = ca.jacobian(L, dq).T
-H = ca.jacobian(dldqdot, dq)
-Cqdot = ca.jacobian(dldqdot, q) @ dq
-GradL_q = dldq
+# CasADi functions so we can evaluate with numbers later
+A_fun = ca.Function("A_fun", [state, u_input, p], [A_sym])
+B_fun = ca.Function("B_fun", [state, u_input, p], [B_sym])
 
-G_vec = ca.jacobian(U,q).T
+def linearize(mp_val, mc_val, l_val, g_val):
+    """Return (A,B) evaluated at upright equilibrium and u=0."""
+    param = [mp_val, mc_val, l_val, g_val]
+    z_eq = [0.0, float(ca.pi), 0.0, 0.0]
+    u_eq = 0.0
+    A = A_fun(z_eq, u_eq, param)
+    B = B_fun(z_eq, u_eq, param)
+    return A.full(), B.full()
 
-ddq = ca.solve(H, (tau - Cqdot + GradL_q))
+def angle_wrap_around_pi(err):
+    """Wrap angle error to (-pi, pi]."""
+    import numpy as np
+    return (err + np.pi) % (2*np.pi) - np.pi
 
-# --------------------------
-# State-space form xdot = f(x,u)
-# --------------------------
-x = ca.vertcat(q, dq)
-xdot = ca.vertcat(dq, ddq)
 
+    

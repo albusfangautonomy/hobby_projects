@@ -23,19 +23,19 @@
       <body name="cart" pos="0 0 0.3">
         <joint name="slider" type="slide" axis="1 0 0" limited="false"/>
         <!-- cart chassis -->
-        <geom name="cart_box" type="box" size="0.20 0.12 0.12" rgba="0.2 0.2 0.2 1" mass="1.0"/>
+        <geom name="cart_box" type="box" size="0.30 0.2 0.18" rgba="0.2 0.2 0.2 0.2" mass="0.5"/>
   
         <!-- Left wheel (visual + free-spinning hinge, no contact friction) -->
-        <body name="wheel_L" pos="0 -0.14 -0.06">
+        <body name="wheel_L" pos="0 -0.25 -0.20">
           <joint name="wheel_L_hinge" type="hinge" axis="0 1 0"/>
           <!-- Cylinder axis is local z; rotate so z->y (wheel spins about y) -->
-          <geom name="wheel_L_geom" type="cylinder" size="0.09 0.02" euler="-90 0 0" rgba="0.1 0.1 0.1 1" mass="0.05"/>
+          <geom name="wheel_L_geom" type="cylinder" size="0.1 0.03" euler="-90 0 0" rgba="0.1 0.1 0.1 1" mass="0.05"/>
         </body>
   
         <!-- Right wheel -->
-        <body name="wheel_R" pos="0 0.14 -0.06">
+        <body name="wheel_R" pos="0 0.25 -0.2">
           <joint name="wheel_R_hinge" type="hinge" axis="0 1 0"/>
-          <geom name="wheel_R_geom" type="cylinder" size="0.09 0.02" euler="-90 0 0" rgba="0.1 0.1 0.1 1" mass="0.05"/>
+          <geom name="wheel_R_geom" type="cylinder" size="0.1 0.03" euler="-90 0 0" rgba="0.1 0.1 0.1 1" mass="0.05"/>
         </body>
   
         <!-- Pole: hinge about y so motion is in the x–z plane -->
@@ -52,16 +52,16 @@
             <!-- Visual rod: nearly massless capsule (tiny mass to avoid singular inertia) -->
             <!-- length = 0.5 m; radius = 0.02 m -->
             <geom name="pole_rod" type="capsule"
-                fromto="0 0 0  0 0 -0.15"
-                size="0.02"
+                fromto="0 0 0  0 0 -0.2"
+                size="0.01"
                 rgba="0.9 0.2 0.2 1"
-                mass="1e-4"/>
+                mass="0.016"/>
         
             <!-- Tip body at z = 0.5 carrying (almost) all pole mass -->
-            <body name="pole_tip" pos="0 0 -0.12">
+            <body name="pole_tip" pos="0.0 0 -0.2">
             <!-- No joint here => rigidly follows the hinge above -->
             <!-- Sphere as point mass proxy; choose the total pole mass you want, e.g., 0.1 kg -->
-            <geom name="pole_tip_mass" type="sphere" size="0.05" mass="0.1" rgba="0.9 0.2 0.2 1"/>
+            <geom name="pole_tip_mass" type="sphere" size="0.05" mass="0.3" rgba="0.9 0.2 0.2 1"/>
             </body>
         </body>
   
@@ -73,7 +73,7 @@
   
     <actuator>
       <!-- Single input: horizontal force on cart -->
-      <motor name="cart_force" joint="slider" ctrllimited="true" ctrlrange="-50 50"/>
+      <motor name="cart_force" joint="slider" ctrllimited="true" ctrlrange="-10 10"/>
     </actuator>
   
     <sensor>

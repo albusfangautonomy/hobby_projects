@@ -3,7 +3,7 @@ version: "3.9"
 services:
   mujoco:
     build: .
-    container_name: mujoco_py
+    container_name: mujoco_py_dev
     environment:
       - DEBIAN_FRONTEND=noninteractive
       - DISPLAY=:1
