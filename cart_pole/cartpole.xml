@@ -52,13 +52,13 @@
             <!-- Visual rod: nearly massless capsule (tiny mass to avoid singular inertia) -->
             <!-- length = 0.5 m; radius = 0.02 m -->
             <geom name="pole_rod" type="capsule"
-                fromto="0 0 0  0 0 -0.2"
+                fromto="0 0 0  0 0 -0.3"
                 size="0.01"
                 rgba="0.9 0.2 0.2 1"
                 mass="0.016"/>
         
             <!-- Tip body at z = 0.5 carrying (almost) all pole mass -->
-            <body name="pole_tip" pos="0.0 0 -0.2">
+            <body name="pole_tip" pos="0.0 0 -0.3">
             <!-- No joint here => rigidly follows the hinge above -->
             <!-- Sphere as point mass proxy; choose the total pole mass you want, e.g., 0.1 kg -->
             <geom name="pole_tip_mass" type="sphere" size="0.05" mass="0.3" rgba="0.9 0.2 0.2 1"/>
