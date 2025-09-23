@@ -64,9 +64,9 @@ B_sym = ca.jacobian(f, u_input)
 # print("A system is: \n", A_sym.str())
 # print("Linearized B system is \n", B_sym.str())
 # Substitute the equilibrium (x=0, theta=pi, xdot=0, thetadot=0, u=0)
-print ("M = \n", M)
-print("Cqdot = ", Cqdot)
-print("tau_g = \n", GradL_q)
+# print ("M = \n", M)
+# print("Cqdot = ", Cqdot)
+# print("tau_g = \n", GradL_q)
 z_eq = ca.SX([0.0, np.pi, 0.0, 0.0])  # SX vector
 A_eq = ca.substitute(A_sym, state, z_eq)
 A_eq = ca.substitute(A_eq, f_x, ca.SX(0.0))
@@ -74,8 +74,8 @@ A_eq = ca.substitute(A_eq, f_x, ca.SX(0.0))
 B_eq = ca.substitute(B_sym, state, z_eq)
 B_eq = ca.substitute(B_eq, f_x, ca.SX(0.0))
 
-print("A_eq is \n", A_eq)
-print("B_eq is \n", B_eq)
+# print("A_eq is \n", A_eq)
+# print("B_eq is \n", B_eq)
 
 
 # CasADi functions so we can evaluate with numbers later

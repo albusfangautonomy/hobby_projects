@@ -15,8 +15,8 @@ mc = 0.5
 l = 0.2
 g = 9.81
 
-Q = np.diag([0.1, 1, 0.1, 0.05])
-R = np.diag([0.8])
+Q = np.diag([0.1, 5, 0.1, 0.05])
+R = np.diag([1.0])
 
 Umin, Umax = -10.0, 10.0
 
@@ -33,8 +33,8 @@ def main():
 
     qpos_adr = model.jnt_qposadr[jnt_id]
     # Set starting angle (e.g. 20 degrees)
-    data.qpos[qpos_adr] = np.deg2rad(186)
-    data.qpos[model.jnt_qposadr[j_slider]] = 0.0
+    data.qpos[qpos_adr] = np.deg2rad(185)
+    data.qpos[model.jnt_qposadr[j_slider]] = 0.5
     data.qvel[model.jnt_dofadr[jnt_id]] = 0.0
     data.qvel[model.jnt_dofadr[j_slider]] = 0.0
 

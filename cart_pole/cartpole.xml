@@ -47,7 +47,7 @@
         <!-- Pole: hinge at base; mass concentrated at tip (classical cart-pole) -->
         <body name="pole_base" pos="0 0 0.08">
             <!-- Hinge so motion is in x–z plane -->
-            <joint name="hinge" type="hinge" axis="0 1 0" limited="false"/>
+            <joint name="hinge" type="hinge" axis="0 -1 0" limited="false"/>
         
             <!-- Visual rod: nearly massless capsule (tiny mass to avoid singular inertia) -->
             <!-- length = 0.5 m; radius = 0.02 m -->
