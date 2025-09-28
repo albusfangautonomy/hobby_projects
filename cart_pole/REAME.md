@@ -1,7 +1,6 @@
 # README — Cart-Pole (Inverted Pendulum on a Cart) Symbolic Dynamics & Linearization with CasADi
 
-This README explains the provided Python script that derives the **cart-pole** dynamics symbolically using **CasADi**, assembles the **manipulator form**  
-$ M(q)\ddot q + C(q,\dot q)\dot q + G(q) = Bu $, and **linearizes** the nonlinear system about the upright equilibrium to obtain $A$ and $B$ matrices for control design (e.g., LQR).
+This README explains the provided Python script that derives the **cart-pole** dynamics symbolically using **CasADi**, assembles the **manipulator form**  $M(q)\ddot q + C(q,\dot q)\dot q + G(q) = Bu$, and **linearizes** the nonlinear system about the upright equilibrium to obtain $A$ and $B$ matrices for control design (e.g., LQR).
 
 ---
 
