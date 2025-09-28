@@ -24,6 +24,7 @@ This README explains the provided Python script that derives the **cart-pole** d
 ## Problem Setup
 
 We model a point-mass **pole** (mass $m_p$, length $l$) hinged at the top of a **cart** (mass $m_c$) that moves horizontally along the $x$ axis. Gravity $g$ acts in $-y$. The generalized coordinates are:
+
 $$
 q = \begin{bmatrix} x \\ \theta \end{bmatrix}, \qquad
 \dot q = \begin{bmatrix} \dot x \\ \dot\theta \end{bmatrix}.
@@ -38,14 +39,19 @@ The control input $u$ is a **horizontal force** applied to the cart.
 ## State, Parameters, Inputs
 
 - **State vector** (code variable `state`):
+
   $$
   \begin{bmatrix} x & \theta & \dot x & \dot\theta \end{bmatrix}^\top
   $$
+
 - **Parameters** (`p`):
+
   $$
   m_p,\; m_c,\; l,\; g
   $$
+
 - **Input mapping**:
+
   $$
   B=\begin{bmatrix}1\\0\end{bmatrix}, \quad \tau = B\,u
   $$
@@ -59,12 +65,14 @@ World frame: $x$ to the right, $y$ up.
 
 - Cart position: $$ (x_c,y_c)=(x,0)$$.
 - Pole mass position (end of a massless rod of length $l$):
+
   $$
   x_p = x + l\sin\theta, \qquad
   y_p = -\,l\cos\theta.
   $$
 
 Velocities are obtained via the Jacobians:
+
 $$
 v_c = \frac{\partial (x_c,y_c)}{\partial q}\,\dot q,\qquad
 v_p = \frac{\partial (x_p,y_p)}{\partial q}\,\dot q.
@@ -75,14 +83,19 @@ $$
 ## Energies and Lagrangian
 
 - **Kinetic energy**
+
   $$
   T = \tfrac12 m_c\|v_c\|^2 + \tfrac12 m_p\|v_p\|^2.
   $$
+
 - **Potential energy** (zero at $y=0$):
+
   $$
   U = m_p g\,y_p = -\,m_p g l \cos\theta.
   $$
+
 - **Lagrangian**:
+
   $$
   L = T - U.
   $$
@@ -92,14 +105,17 @@ $$
 ## Euler–Lagrange → Manipulator Form
 
 Euler–Lagrange with generalized forces $\tau = Bu$:
+
 $$
 \frac{d}{dt}\frac{\partial L}{\partial \dot q} - \frac{\partial L}{\partial q} \;=\; \tau.
 $$
 
 After expanding and regrouping, this yields the **manipulator form**:
+
 $$
 M(q)\,\ddot q \;+\; C(q,\dot q)\,\dot q \;+\; G(q) \;=\; B\,u,
 $$
+
 where
 - $M(q)$ is the **inertia (mass) matrix**,
 - $C(q,\dot q)\dot q$ is the **Coriolis/centrifugal** vector,
