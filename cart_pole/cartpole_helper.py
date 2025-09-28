@@ -57,7 +57,8 @@ M = ca.jacobian(dLdqdot, qdot)
 Cqdot = ca.jacobian(dLdqdot, q) @ qdot
 GradL_q = ca.jacobian(L, q).T
 ddq = ca.solve(M, (B *u_input - Cqdot + GradL_q))
-
+# G_vec   = ca.jacobian(U, q).T                 
+# ddq = ca.solve(M, (B *u_input - Cqdot - G_vec))
 f = ca.vertcat(xdot, thetadot, ddq)
 A_sym = ca.jacobian(f, state)
 B_sym = ca.jacobian(f, u_input)
