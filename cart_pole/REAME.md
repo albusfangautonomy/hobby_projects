@@ -47,13 +47,13 @@ $$
 - **Parameters** (`p`):
 
 $$
-m_p,\; m_c,\; l,\; g
+m_p, m_c, l, g
 $$
 
 - **Input mapping**:
 
 $$
-B=\begin{bmatrix}1\\0\end{bmatrix}, \quad \tau = B\,u
+B=\begin{bmatrix}1 \\ 0\end{bmatrix}, \quad \tau = B\,u
 $$
 
 (the force acts only on the cart’s generalized coordinate $x$).
