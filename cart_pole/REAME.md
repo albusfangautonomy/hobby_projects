@@ -55,7 +55,8 @@ $$
 $$
 B=\begin{bmatrix}1\\0\end{bmatrix}, \quad \tau = B\,u
 $$
-  (the force acts only on the cart’s generalized coordinate $x$).
+
+(the force acts only on the cart’s generalized coordinate $x$).
 
 ---
 
@@ -90,15 +91,15 @@ $$
 
 - **Potential energy** (zero at $y=0$):
 
-  $$
-  U = m_p g\,y_p = -\,m_p g l \cos\theta.
-  $$
+$$
+U = m_p g\,y_p = -\,m_p g l \cos\theta.
+$$
 
 - **Lagrangian**:
 
-  $$
-  L = T - U.
-  $$
+$$
+L = T - U.
+$$
 
 ---
 
