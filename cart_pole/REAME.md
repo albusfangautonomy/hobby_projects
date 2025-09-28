@@ -38,18 +38,23 @@ The control input $u$ is a **horizontal force** applied to the cart.
 
 ## State, Parameters, Inputs
 
-- **State vector** (code variable `state`): $\begin{bmatrix} x & \theta & \dot x & \dot\theta \end{bmatrix}^\top$
+- **State vector** (code variable `state`): 
+
+$$
+\begin{bmatrix} x & \theta & \dot x & \dot\theta \end{bmatrix}^\top
+$$
+
 - **Parameters** (`p`):
 
-  $$
-  m_p,\; m_c,\; l,\; g
-  $$
+$$
+m_p,\; m_c,\; l,\; g
+$$
 
 - **Input mapping**:
 
-  $$
-  B=\begin{bmatrix}1\\0\end{bmatrix}, \quad \tau = B\,u
-  $$
+$$
+B=\begin{bmatrix}1\\0\end{bmatrix}, \quad \tau = B\,u
+$$
   (the force acts only on the cart’s generalized coordinate $x$).
 
 ---
@@ -61,10 +66,10 @@ World frame: $x$ to the right, $y$ up.
 - Cart position: $$ (x_c,y_c)=(x,0)$$.
 - Pole mass position (end of a massless rod of length $l$):
 
-  $$
-  x_p = x + l\sin\theta, \qquad
-  y_p = -\,l\cos\theta.
-  $$
+$$
+x_p = x + l\sin\theta, \qquad
+y_p = -\,l\cos\theta.
+$$
 
 Velocities are obtained via the Jacobians:
 
@@ -79,9 +84,9 @@ $$
 
 - **Kinetic energy**
 
-  $$
-  T = \tfrac12 m_c\|v_c\|^2 + \tfrac12 m_p\|v_p\|^2.
-  $$
+$$
+T = \tfrac12 m_c\|v_c\|^2 + \tfrac12 m_p\|v_p\|^2.
+$$
 
 - **Potential energy** (zero at $y=0$):
 
