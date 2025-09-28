@@ -1,0 +1,70 @@
+<mujoco model="acrobot-midpoint-mass">
+  <!-- Simulation options -->
+  <option timestep="0.002" gravity="0 -9.81 0" integrator="RK4"/>
+  <compiler angle="degree" coordinate="local"/>
+
+  <!-- Defaults: no damping/friction for a clean underactuated model -->
+  <default>
+    <joint damping="0" armature="0" limited="false" stiffness="0"/>
+    <geom type="capsule" size="0.03" friction="0 0 0" rgba="0.2 0.6 0.9 1"/>
+  </default>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512"
+             rgb1="0.9 0.9 0.9" rgb2="0.8 0.8 0.8"/>
+    <material name="mat" texture="grid" texrepeat="6 6" specular="0.1" shininess="0.3"/>
+  </asset>
+
+  <worldbody>
+    <!-- Ground (visual) -->
+    <geom name="floor" type="plane" size="50 50 1" material="mat" rgba="0.95 0.95 0.95 1"/>
+
+    <!-- === Parameters (edit these numbers as you like) ===
+         l1=1.0 m, m1=1.0 kg
+         l2=1.0 m, m2=1.0 kg
+         radius=0.03 m (visual only)
+    -->
+
+    <!-- Link 1 (hinge at world origin, rotates about z) -->
+    <body name="link1" pos="0 1.0 0">  <!-- raise a bit to see it above the plane -->
+      <!-- Point-mass-like inertial located at half length along +x -->
+      <!-- Ixx/Iyy kept tiny; for a slender rod in the x-direction only Izz matters here -->
+      <inertial pos="0.5 0 0" mass="1.0" diaginertia="1e-6 1e-6 0.0833333333"/>
+      <!-- Shoulder joint (unactuated in classic acrobot) -->
+      <joint name="shoulder" type="hinge" axis="0 0 1"/>
+
+      <!-- Visual-only capsule spanning from 0 to l1 along x (massless via density=0) -->
+      <geom name="link1_vis" fromto="0 0 0  1.0 0 0" size="0.03" density="0"/>
+
+      <!-- Link 2 attaches at the end of link 1 (x = l1) -->
+      <body name="link2" pos="1.0 0 0">
+        <!-- Mass concentrated at half of link 2 -->
+        <inertial pos="0.5 0 0" mass="1.0" diaginertia="1e-6 1e-6 0.0833333333"/>
+        <!-- Elbow joint (this is the actuated one in a classic acrobot) -->
+        <joint name="elbow" type="hinge" axis="0 0 1"/>
+
+        <!-- Visual-only capsule for link 2 -->
+        <geom name="link2_vis" fromto="0 0 0  1.0 0 0" size="0.03" density="0"/>
+
+        <!-- (Optional) small visual marker at the tip -->
+        <geom name="tip" type="sphere" size="0.02" pos="1.0 0 0" rgba="0.9 0.3 0.2 1" density="0"/>
+      </body>
+    </body>
+  </worldbody>
+
+  <!-- Actuators: classic acrobot has motor ONLY at the elbow -->
+  <actuator>
+    <motor name="elbow_motor" joint="elbow" gear="1"/>
+    <!-- Uncomment the next line if you want to also actuate the shoulder
+    <motor name="shoulder_motor" joint="shoulder" gear="1"/>
+    -->
+  </actuator>
+
+  <!-- Simple joint sensors (optional) -->
+  <sensor>
+    <jointpos name="theta1" joint="shoulder"/>
+    <jointpos name="theta2" joint="elbow"/>
+    <jointvel name="theta1dot" joint="shoulder"/>
+    <jointvel name="dq_elbow" joint="elbow"/>
+  </sensor>
+</mujoco>

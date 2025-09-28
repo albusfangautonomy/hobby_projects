@@ -27,7 +27,7 @@ def main():
             step_start = time.time()
 
             # Apply control
-            data.ctrl[torque] = +0.5
+            data.ctrl[torque] = -0.3
 
             # Step the simulation
             mujoco.mj_step(model, data)

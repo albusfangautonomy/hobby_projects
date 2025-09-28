@@ -19,16 +19,16 @@
         <body name="acrobat" pos = "0 0 1.2">
             <body name="link1" pos= "0 0 0">
                 <joint name="link1_joint" type="hinge" axis="0 -1 0" limited="false"/>
-                <geom name="link1" type="capsule" fromto="0 0 0 0 0 -0.5" size="0.05" mass="0.001" rgba="0.9 0.2 0.2 0.2"/>
+                <geom name="link1" type="capsule" fromto="0 0 0 0 0 -0.5" size="0.01" mass="0.0000" rgba="0.9 0.2 0.2 0.2"/>
                 <body name="point_mass1" pos="0 0 -0.25">
-                    <geom name="link1_point_mass" type="sphere" size="0.02" mass="0.3" rgba="0.1 0.1 0.1 0.8"/>
+                    <geom name="link1_point_mass" type="sphere" size="0.02" mass="1" rgba="0.1 0.1 0.1 0.8"/>
                 </body>
 
                 <body name="link2" pos="0 0 -0.5">
                     <joint name="link2_joint" type="hinge" axis="0 -1 0" limited="false"/>
-                    <geom name="link2" type="capsule" fromto="0 0 0 0 0 -0.5" size="0.05" mass="0.001" rgba="0.9 0.2 0.2 0.2"/>
+                    <geom name="link2" type="capsule" fromto="0 0 0 0 0 -0.5" size="0.01" mass="0.0000" rgba="0.9 0.2 0.2 0.2"/>
                     <body name="point_mass2" pos="0 0 -0.25">
-                        <geom name="link2_point_mass" type="sphere" size="0.02" mass="0.3" rgba="0.1 0.1 0.1 0.8"/>
+                        <geom name="link2_point_mass" type="sphere" size="0.02" mass="1" rgba="0.1 0.1 0.1 0.8"/>
                     </body>
                 </body>
             </body>
@@ -40,7 +40,7 @@
     </worldbody>
 
     <actuator>
-        <motor name="torque" joint="link2_joint" gear="1" ctrllimited="true" ctrlrange="-10 10"/>
+        <motor name="torque" joint="link2_joint" gear="0.5" ctrllimited="true" ctrlrange="-10 10"/>
     </actuator>
 
     <sensor>
