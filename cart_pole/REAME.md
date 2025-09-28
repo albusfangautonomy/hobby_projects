@@ -39,7 +39,6 @@ The control input $u$ is a **horizontal force** applied to the cart.
 ## State, Parameters, Inputs
 
 - **State vector** (code variable `state`):
-
   $$
   \begin{bmatrix} x & \theta & \dot x & \dot\theta \end{bmatrix}^\top
   $$
