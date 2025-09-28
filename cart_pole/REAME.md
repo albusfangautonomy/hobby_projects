@@ -53,7 +53,7 @@ $$
 - **Input mapping**:
 
 $$
-B=\begin{bmatrix}1 \\ 0\end{bmatrix}, \quad \tau = B\,u
+B=\begin{bmatrix}1 \\ 0\end{bmatrix}, \quad \tau = Bu
 $$
 
 (the force acts only on the cart’s generalized coordinate $x$).
@@ -69,14 +69,14 @@ World frame: $x$ to the right, $y$ up.
 
 $$
 x_p = x + l\sin\theta, \qquad
-y_p = -\,l\cos\theta.
+y_p = -l\cos\theta.
 $$
 
 Velocities are obtained via the Jacobians:
 
 $$
-v_c = \frac{\partial (x_c,y_c)}{\partial q}\,\dot q,\qquad
-v_p = \frac{\partial (x_p,y_p)}{\partial q}\,\dot q.
+v_c = \frac{\partial (x_c,y_c)}{\partial q}\dot q,\qquad
+v_p = \frac{\partial (x_p,y_p)}{\partial q}\dot q.
 $$
 
 ---
@@ -92,7 +92,7 @@ $$
 - **Potential energy** (zero at $y=0$):
 
 $$
-U = m_p g\,y_p = -\,m_p g l \cos\theta.
+U = m_p gy_p = -m_p g l \cos\theta.
 $$
 
 - **Lagrangian**:
@@ -114,7 +114,7 @@ $$
 After expanding and regrouping, this yields the **manipulator form**:
 
 $$
-M(q)\,\ddot q \;+\; C(q,\dot q)\,\dot q \;+\; G(q) \;=\; B\,u,
+M(q)\ddot q \;+\; C(q,\dot q)\dot q \;+\; G(q) \;=\; Bu,
 $$
 
 where
